@@ -5,11 +5,9 @@
 # but you can also edit it by hand.
 
 meteor-platform
-insecure
 mongo
 urigo:angular
 twbs:bootstrap
-msavin:mongol
 momentjs:moment
 underscore
 underscorestring:underscore.string

@@ -1,3 +1,5 @@
+var Contacts = new Mongo.Collection('contacts');
+
 if (Meteor.isClient) {
     var union = angular.module('union', ['angular-meteor', 'ui.router']);
     
@@ -10,6 +12,11 @@ if (Meteor.isClient) {
                     url: '/',
                     templateUrl: 'union.ng.html',
                     controller: 'UnionCtrl'
+                })
+                .state('contactNew', {
+                    url: '/contact/new',
+                    templateUrl: 'union-contact-new.ng.html',
+                    controller: 'UnionContactNewCtrl'
                 });
             
             $urlRouterProvider.otherwise('/');
@@ -18,7 +25,17 @@ if (Meteor.isClient) {
     union
         .controller('UnionCtrl', ['$scope', '$meteor', '$log', function ($scope, $meteor, $log) {
             $log.debug('union controller'); 
-            $scope.message = "testing";
+            $scope.contacts = $meteor.collection(Contacts).subscribe('contacts');
+        }])
+        .controller('UnionContactNewCtrl', ['$scope', '$meteor', '$log', function ($scope, $meteor, $log) {
+            $log.debug('union contact new controller');
+            $scope.form = {};
+            $scope.contacts = $meteor.collection(Contacts).subscribe('contacts');
+            $scope.addContact = function (form) {
+                $log.debug('add contact');
+                $scope.contacts.save(form);
+                $scope.form = {};
+            };
         }]);
 
     union
@@ -28,4 +45,7 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
+    Meteor.publish('contacts', function () {
+        return Contacts.find({});
+    });
 }

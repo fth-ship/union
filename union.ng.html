@@ -1,1 +1,17 @@
-<p>Hello {{message}}</p>
+<hr>
+
+<ul class="nav nav-pills">
+  <li role="presentation"><a href="/contact/new">Create new contact</a></li>
+</ul>
+
+<hr>
+
+<form>
+    <div class="form-group">
+        <input type="text" class="form-control input-lg" placeholder="Find an contact..." ng-model="keyword">
+    </div>
+</form>
+<hr>
+<ul class="list-group">
+    <li class="list-group-item" ng-repeat="contact in contacts | filter:keyword"><a href="/contact/{{contact._id}}">{{contact.fullName}}</a></li>
+</ul>
